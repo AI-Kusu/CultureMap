@@ -17,4 +17,11 @@
         app:itemTextColor="@color/black"
         app:menu="@menu/bottom_menu" />
 
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/open_bottom_sheet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Open Modal Bottom Sheet" />
+
 </RelativeLayout>

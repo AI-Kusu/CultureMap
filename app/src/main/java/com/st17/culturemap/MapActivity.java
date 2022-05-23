@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -15,21 +15,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.geometry.Circle;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.CircleMapObject;
 import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.MapObjectTapListener;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.user_location.UserLocationLayer;
 import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
 
 public class MapActivity extends Activity implements UserLocationObjectListener{
 
@@ -63,13 +65,17 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
         userLocationLayer.setHeadingEnabled(false);
         userLocationLayer.setObjectListener(this);
 
+        //
+
 
         ImageProvider imageProvider = ImageProvider.fromResource(
                 MapActivity.this, R.drawable.search_result);
 
-        List<Point> points = createPoints();
-        mapView.getMap().getMapObjects().addCollection().addPlacemarks(points, imageProvider, new IconStyle());
+        mapObjects = mapView.getMap().getMapObjects().addCollection();
 
+        createMapObjects();
+
+        createMapObject(new Point(56.842893, 60.678715), imageProvider);
 
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigator);
@@ -82,7 +88,7 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
 
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                     case R.id.map:
                         return true;
@@ -127,17 +133,95 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
     public void onObjectUpdated(@NonNull UserLocationView view, @NonNull ObjectEvent event) {
     }
 
-    private List<Point> createPoints() {
-        ArrayList<Point> points = new ArrayList<Point>();
-        Random random = new Random();
+    private void createMapObject(Point point,ImageProvider imageProvider) {
+        createTappablePoint(point, imageProvider);
+    }
+
+    // Сильная ссылка на слушателя.
+    private MapObjectTapListener pointMapObjectTapListener = new MapObjectTapListener() {
+        @Override
+        public boolean onMapObjectTap(MapObject mapObject, Point point) {
+            if (mapObject instanceof PlacemarkMapObject) {
+                Toast toast = Toast.makeText(getApplicationContext(), "text",Toast.LENGTH_SHORT);
+
+                toast.show();
+            }
+
+            return true;
+        }
+    };
+
+    class PointMapObjectUserData {
+        final int id;
+        final String description;
+
+        PointMapObjectUserData(int id, String description) {
+            this.id = id;
+            this.description = description;
+        }
+    }
+
+    private void createTappablePoint(Point point, ImageProvider imageProvider) {
+        PlacemarkMapObject placemark = mapObjects.addPlacemark(point,imageProvider,new IconStyle());
+
+        placemark.setUserData(new PointMapObjectUserData(0, "point"));
+
+        // Клиентский код должен сохранять строгую ссылку на прослушиватель.
+        placemark.addTapListener(pointMapObjectTapListener);
+    }
 
 
-        points.add(new Point(56.842964, 60.675376));
-        points.add(new Point(56.844033, 60.654077));
-        points.add(new Point(56.842893, 60.678715));
-        points.add(new Point(56.837238, 60.597644));
+    //original
 
+    private void createMapObjects() {
+        createTappableCircle();
+    }
 
-        return points;
+    // Сильная ссылка на слушателя.
+    private MapObjectTapListener circleMapObjectTapListener = new MapObjectTapListener() {
+        @Override
+        public boolean onMapObjectTap(MapObject mapObject, Point point) {
+            if (mapObject instanceof CircleMapObject) {
+                CircleMapObject circle = (CircleMapObject)mapObject;
+
+                float randomRadius = 100.0f + 50.0f * new Random().nextFloat();
+
+                Circle curGeometry = circle.getGeometry();
+                Circle newGeometry = new Circle(curGeometry.getCenter(), randomRadius);
+                circle.setGeometry(newGeometry);
+
+                Object userData = circle.getUserData();
+                if (userData instanceof CircleMapObjectUserData) {
+                    CircleMapObjectUserData circleUserData = (CircleMapObjectUserData)userData;
+
+                    Toast toast = Toast.makeText(
+                            getApplicationContext(),
+                            "Circle with id and description tapped",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+            return true;
+        }
+    };
+
+    class CircleMapObjectUserData {
+        final int id;
+        final String description;
+
+        CircleMapObjectUserData(int id, String description) {
+            this.id = id;
+            this.description = description;
+        }
+    }
+
+    private void createTappableCircle() {
+        CircleMapObject circle = mapObjects.addCircle(new Circle(new Point(56.842964, 60.675376), 100), Color.GREEN, 2, Color.RED);
+
+        circle.setZIndex(100.0f);
+        circle.setUserData(new CircleMapObjectUserData(42, "Tappable circle"));
+
+        // Клиентский код должен сохранять строгую ссылку на прослушиватель.
+        circle.addTapListener(circleMapObjectTapListener);
     }
 }

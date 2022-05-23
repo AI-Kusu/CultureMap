@@ -30,7 +30,7 @@ public class PersonActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), PersonActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                     case R.id.map:
                         startActivity(new Intent(getApplicationContext(), MapActivity.class));

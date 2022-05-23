@@ -6,7 +6,10 @@
         <entry key="..\:/CultureMap/app/src/main/res/drawable/selector.xml" value="0.124" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_map.xml" value="0.4" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_my_sqlhelper.xml" value="0.25416666666666665" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_person.xml" value="0.1897644927536232" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.16799999999999998" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.24003623188405798" />
         <entry key="..\:/CultureMap/app/src/main/res/menu/bottom_menu.xml" value="0.11302083333333333" />
       </map>
     </option>
