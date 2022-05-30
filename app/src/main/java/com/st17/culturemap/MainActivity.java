@@ -23,15 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button OpenBottomSheet = findViewById(R.id.open_bottom_sheet);
 
-        OpenBottomSheet.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-                        bottomSheetDialog.show(getSupportFragmentManager(), "ModalBottomSheet");
-                    }
-                });
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -40,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 switch (item.getItemId())
                 {
                     case R.id.home:
@@ -48,11 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.map:
                         startActivity(new Intent(getApplicationContext(),MapActivity.class));
                         overridePendingTransition(0,0);
-                    case R.id.person:
-                        startActivity(new Intent(getApplicationContext(),PersonActivity.class));
-                        overridePendingTransition(0,0);
                 }
-
                 return false;
             }
         });

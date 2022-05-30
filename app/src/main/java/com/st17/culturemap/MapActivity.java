@@ -1,25 +1,28 @@
 package com.st17.culturemap;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PointF;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.st17.culturemap.DBConnection.MySQLHelper;
+import com.st17.culturemap.objects.PlaceObject;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
-import com.yandex.mapkit.geometry.Circle;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
-import com.yandex.mapkit.map.CircleMapObject;
 import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
@@ -31,9 +34,10 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MapActivity extends Activity implements UserLocationObjectListener{
+public class MapActivity extends AppCompatActivity implements UserLocationObjectListener{
 
     BottomNavigationView bottomNavigationView;
 
@@ -41,9 +45,12 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
     private MapObjectCollection mapObjects;
     private UserLocationLayer userLocationLayer;
 
+    List<PlaceObject> objects = new ArrayList<>();
+
+    MySQLHelper db = new MySQLHelper();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         MapKitFactory.setApiKey("05f9eba7-bcf9-4e5f-981f-0c08fffc855b");
         MapKitFactory.initialize(this);
 
@@ -60,26 +67,30 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
 
         MapKit mapKit = MapKitFactory.getInstance();
 
+        //стиль карты
+        setMapStyle();
+
         userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
         userLocationLayer.setVisible(true);
         userLocationLayer.setHeadingEnabled(false);
         userLocationLayer.setObjectListener(this);
 
-        //
+        //objects
+        createObjects();
 
+        ImageProvider imageProvider = ImageProvider.fromBitmap(drawSimpleBitmap("Каменные \n палатки"));
 
-        ImageProvider imageProvider = ImageProvider.fromResource(
-                MapActivity.this, R.drawable.search_result);
+        mapObjects = mapView.getMap().getMapObjects();
 
-        mapObjects = mapView.getMap().getMapObjects().addCollection();
+//loadPlacemarks(imageProvider);
 
-        createMapObjects();
-
-        createMapObject(new Point(56.842893, 60.678715), imageProvider);
+        for(PlaceObject place : objects){
+            createTappablePoint(place, imageProvider);
+        }
 
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigator);
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.map);
 
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -92,9 +103,6 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
                         overridePendingTransition(0, 0);
                     case R.id.map:
                         return true;
-                    case R.id.person:
-                        startActivity(new Intent(getApplicationContext(), PersonActivity.class));
-                        overridePendingTransition(0, 0);
                 }
 
                 return false;
@@ -118,10 +126,6 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
 
     @Override
     public void onObjectAdded(UserLocationView userLocationView) {
-        userLocationLayer.setAnchor(
-                new PointF((float)(mapView.getWidth() * 0.5), (float)(mapView.getHeight() * 0.5)),
-                new PointF((float)(mapView.getWidth() * 0.5), (float)(mapView.getHeight() * 0.83)));
-
         userLocationView.getAccuracyCircle().setFillColor(Color.BLUE & 0x99ffffff);
     }
 
@@ -133,95 +137,133 @@ public class MapActivity extends Activity implements UserLocationObjectListener{
     public void onObjectUpdated(@NonNull UserLocationView view, @NonNull ObjectEvent event) {
     }
 
-    private void createMapObject(Point point,ImageProvider imageProvider) {
-        createTappablePoint(point, imageProvider);
-    }
-
     // Сильная ссылка на слушателя.
     private MapObjectTapListener pointMapObjectTapListener = new MapObjectTapListener() {
         @Override
         public boolean onMapObjectTap(MapObject mapObject, Point point) {
             if (mapObject instanceof PlacemarkMapObject) {
-                Toast toast = Toast.makeText(getApplicationContext(), "text",Toast.LENGTH_SHORT);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
 
-                toast.show();
+                PlacemarkMapObject placemarkMapObject = (PlacemarkMapObject)mapObject;
+
+                Object userData = placemarkMapObject.getUserData();
+
+                if (userData instanceof MapObjectUserData) {
+                    MapObjectUserData mapObjectUserData = (MapObjectUserData)userData;
+
+                    bottomSheetDialog.name = mapObjectUserData.name;
+                    bottomSheetDialog.description = mapObjectUserData.description;
+
+                    bottomSheetDialog.show(getSupportFragmentManager(), "ModalBottomSheet");
+                }
             }
 
             return true;
         }
     };
 
-    class PointMapObjectUserData {
-        final int id;
-        final String description;
+    private void createTappablePoint(PlaceObject placeObject, ImageProvider imageProvider) {
+        PlacemarkMapObject placemark = mapObjects.addPlacemark(placeObject.point,imageProvider,new IconStyle());
 
-        PointMapObjectUserData(int id, String description) {
-            this.id = id;
-            this.description = description;
-        }
-    }
+        placemark.setUserData(new MapObjectUserData(placeObject.id, placeObject.name, placeObject.description));
 
-    private void createTappablePoint(Point point, ImageProvider imageProvider) {
-        PlacemarkMapObject placemark = mapObjects.addPlacemark(point,imageProvider,new IconStyle());
-
-        placemark.setUserData(new PointMapObjectUserData(0, "point"));
-
-        // Клиентский код должен сохранять строгую ссылку на прослушиватель.
         placemark.addTapListener(pointMapObjectTapListener);
     }
 
-
-    //original
-
-    private void createMapObjects() {
-        createTappableCircle();
-    }
-
-    // Сильная ссылка на слушателя.
-    private MapObjectTapListener circleMapObjectTapListener = new MapObjectTapListener() {
-        @Override
-        public boolean onMapObjectTap(MapObject mapObject, Point point) {
-            if (mapObject instanceof CircleMapObject) {
-                CircleMapObject circle = (CircleMapObject)mapObject;
-
-                float randomRadius = 100.0f + 50.0f * new Random().nextFloat();
-
-                Circle curGeometry = circle.getGeometry();
-                Circle newGeometry = new Circle(curGeometry.getCenter(), randomRadius);
-                circle.setGeometry(newGeometry);
-
-                Object userData = circle.getUserData();
-                if (userData instanceof CircleMapObjectUserData) {
-                    CircleMapObjectUserData circleUserData = (CircleMapObjectUserData)userData;
-
-                    Toast toast = Toast.makeText(
-                            getApplicationContext(),
-                            "Circle with id and description tapped",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-            return true;
-        }
-    };
-
-    class CircleMapObjectUserData {
+    private static class MapObjectUserData {
         final int id;
+        final String name;
         final String description;
 
-        CircleMapObjectUserData(int id, String description) {
+        MapObjectUserData(int id, String name, String description) {
             this.id = id;
+            this.name = name;
             this.description = description;
         }
     }
 
-    private void createTappableCircle() {
-        CircleMapObject circle = mapObjects.addCircle(new Circle(new Point(56.842964, 60.675376), 100), Color.GREEN, 2, Color.RED);
+//void loadPlacemarks(ImageProvider imageProvider){
 
-        circle.setZIndex(100.0f);
-        circle.setUserData(new CircleMapObjectUserData(42, "Tappable circle"));
+//    Thread thread = new Thread(new Runnable(){
+//        @Override
+//        public void run() {
+//            try {
+//                // Получаем все задания из базы данных
+//                points = db.getPoints();
 
-        // Клиентский код должен сохранять строгую ссылку на прослушиватель.
-        circle.addTapListener(circleMapObjectTapListener);
+//                mapObjects.addPlacemarks(points, imageProvider, new IconStyle());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    });
+
+//    thread.start();
+//}
+
+    //рисование значка
+    public Bitmap drawSimpleBitmap(String name) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.search_result).copy(Bitmap.Config.ARGB_8888, true);;
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+
+        // отрисовка текста
+        paint.setColor(Color.BLACK);
+        paint.setAntiAlias(true);
+        paint.setTextSize(25 );
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setFakeBoldText(true);
+
+        int y = 100;
+        if (name.contains("\n"))
+        {
+            String[] texts = name.split("\n");
+
+            for (String txt : texts)
+            {
+                canvas.drawText(txt, 50, y, paint);
+
+                y += paint.getTextSize();
+            }
+        }
+        else
+        {
+            canvas.drawText(name, 0, 100 - ((paint.descent() + paint.ascent()) / 2), paint);
+        }
+
+        return bitmap;
+    }
+
+    //список мест пока нет бд
+    public void createObjects(){
+        PlaceObject p = new PlaceObject();
+        p.id = 1;
+        p.name = "Екатеринбургский государственный цирк им. В. И. Филатова";
+        p.description = "Первый стационарный цирк Екатеринбурга открылся 20 ноября 1883" +
+                " года на Дровяной площади. Здание цирка строил приехавший с семьей в Россию" +
+                " мастер циркового искусства Максимилиано Труцци[1]. Цирк представлял собой небольшое" +
+                " деревянное строение, с коническими натяжными куполами, которое могло вместить до 900 зрителей." +
+                " Строители предусмотрели внутри систему отопления, поэтому представления давались даже морозной зимой[2]." +
+                " Семья Труцци располагала большой программой: наездничество во всех видах, икарийские игры, пантомима." +
+                " В цирке проходили не только обычные представления, но ставились и драматические спектакли.";
+        p.point = new Point(56.825943, 60.604998);
+        objects.add(p);
+    }
+
+    private void setMapStyle(){
+        String style = "[" +
+                "        {" +
+                "            \"types\": \"point\"," +
+                "            \"tags\": {" +
+                "                \"all\": [" +
+                "                    \"poi\"" +
+                "                ]" +
+                "            }," +
+                "            \"stylers\": {" +
+                "                \"visibility\": \"off\"" +
+                "            }" +
+                "        }" +
+                "    ]";
+        mapView.getMap().setMapStyle(style);
     }
 }
