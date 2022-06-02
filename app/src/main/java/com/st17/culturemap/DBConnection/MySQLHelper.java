@@ -17,3 +17,4 @@ public class MySQLHelper extends AppCompatActivity {
     private static final String PASSWORD = "GJ2L8pQ94L7wR6~7";
 
 }
+
