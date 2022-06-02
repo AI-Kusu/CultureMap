@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.yandex.android:maps.mobile:4.0.0-full@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1026922619105f1892143ecee41e21fc/transformed/jetified-maps.mobile-4.0.0-full/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1026922619105f1892143ecee41e21fc/transformed/jetified-maps.mobile-4.0.0-full/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1026922619105f1892143ecee41e21fc/transformed/jetified-maps.mobile-4.0.0-full/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ac491b8a6b92628fa7af284692548d1d/transformed/jetified-maps.mobile-4.0.0-full/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/ac491b8a6b92628fa7af284692548d1d/transformed/jetified-maps.mobile-4.0.0-full/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/ac491b8a6b92628fa7af284692548d1d/transformed/jetified-maps.mobile-4.0.0-full/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
