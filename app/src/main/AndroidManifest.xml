@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CultureMap">
         <activity
+            android:name=".RVObjectsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MapActivity"
             android:exported="false" />
         <activity
@@ -23,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DBConnection.MySQLHelper" />
     </application>
 
 </manifest>

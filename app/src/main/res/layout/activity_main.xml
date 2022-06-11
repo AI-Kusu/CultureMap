@@ -19,4 +19,17 @@
         app:itemTextColor="@color/black"
         app:menu="@menu/bottom_menu" />
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="226dp"
+        android:layout_height="318dp"
+        android:layout_above="@+id/bottom_navigator"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        android:layout_marginBottom="306dp"
+        android:onClick="OpenEventsClick"
+        app:srcCompat="@drawable/ic_baseline_map_24"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 </RelativeLayout>

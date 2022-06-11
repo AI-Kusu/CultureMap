@@ -9,13 +9,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.st17.culturemap.DBConnection.MySQLHelper;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.st17.culturemap.objects.PlaceObject;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
@@ -34,8 +36,8 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MapActivity extends AppCompatActivity implements UserLocationObjectListener{
 
@@ -45,9 +47,7 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
     private MapObjectCollection mapObjects;
     private UserLocationLayer userLocationLayer;
 
-    List<PlaceObject> objects = new ArrayList<>();
-
-    MySQLHelper db = new MySQLHelper();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,18 +75,11 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         userLocationLayer.setHeadingEnabled(false);
         userLocationLayer.setObjectListener(this);
 
-        //objects
-        createObjects();
-
-        ImageProvider imageProvider = ImageProvider.fromBitmap(drawSimpleBitmap("Каменные \n палатки"));
-
         mapObjects = mapView.getMap().getMapObjects();
 
-//loadPlacemarks(imageProvider);
+        loadObjects();
 
-        for(PlaceObject place : objects){
-            createTappablePoint(place, imageProvider);
-        }
+        loadEvents();
 
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigator);
@@ -108,6 +101,60 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                 return false;
             }
         });
+    }
+
+    public void loadObjects() {
+        db.collection("PlaceObject").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                        for (DocumentSnapshot d : list) {
+                            PlaceObject object = new PlaceObject();
+                            Map<String, Object> info = d.getData();
+
+                            Map<String, Object> location = (Map<String, Object>) d.get("point");
+
+                            object.name = info.get("name").toString();
+                            object.description = info.get("description").toString();
+                            object.type = info.get("type").toString();
+                            object.point = new Point(Double.parseDouble(location.get("latitude").toString()), Double.parseDouble(location.get("longitude").toString()));
+
+                            ImageProvider imageProvider = ImageProvider.fromBitmap(drawSimpleBitmap(object.name, object.type));
+
+                            createTappablePoint(object, imageProvider);
+
+                        }
+                    }
+                });
+    }
+
+    public void loadEvents() {
+        db.collection("Events").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                        for (DocumentSnapshot d : list) {
+                            PlaceObject object = new PlaceObject();
+                            Map<String, Object> info = d.getData();
+
+                            Map<String, Object> location = (Map<String, Object>) d.get("point");
+
+                            object.name = info.get("name").toString();
+                            object.description = info.get("description").toString();
+                            object.type = "event";
+                            object.point = new Point(Double.parseDouble(location.get("latitude").toString()), Double.parseDouble(location.get("longitude").toString()));
+
+                            ImageProvider imageProvider = ImageProvider.fromBitmap(drawSimpleBitmap(object.name, object.type));
+
+                            createTappablePoint(object, imageProvider);
+
+                        }
+                    }
+                });
     }
 
     @Override
@@ -165,45 +212,25 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
     private void createTappablePoint(PlaceObject placeObject, ImageProvider imageProvider) {
         PlacemarkMapObject placemark = mapObjects.addPlacemark(placeObject.point,imageProvider,new IconStyle());
 
-        placemark.setUserData(new MapObjectUserData(placeObject.id, placeObject.name, placeObject.description));
+        placemark.setUserData(new MapObjectUserData(placeObject.name, placeObject.description));
 
         placemark.addTapListener(pointMapObjectTapListener);
     }
 
     private static class MapObjectUserData {
-        final int id;
         final String name;
         final String description;
 
-        MapObjectUserData(int id, String name, String description) {
-            this.id = id;
+        MapObjectUserData(String name, String description) {
             this.name = name;
             this.description = description;
         }
     }
 
-//void loadPlacemarks(ImageProvider imageProvider){
-
-//    Thread thread = new Thread(new Runnable(){
-//        @Override
-//        public void run() {
-//            try {
-//                // Получаем все задания из базы данных
-//                points = db.getPoints();
-
-//                mapObjects.addPlacemarks(points, imageProvider, new IconStyle());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    });
-
-//    thread.start();
-//}
-
     //рисование значка
-    public Bitmap drawSimpleBitmap(String name) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.search_result).copy(Bitmap.Config.ARGB_8888, true);;
+    public Bitmap drawSimpleBitmap(String name, String type) {
+
+        Bitmap bitmap = selectImage(type);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
 
@@ -234,20 +261,26 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         return bitmap;
     }
 
-    //список мест пока нет бд
-    public void createObjects(){
-        PlaceObject p = new PlaceObject();
-        p.id = 1;
-        p.name = "Екатеринбургский государственный цирк им. В. И. Филатова";
-        p.description = "Первый стационарный цирк Екатеринбурга открылся 20 ноября 1883" +
-                " года на Дровяной площади. Здание цирка строил приехавший с семьей в Россию" +
-                " мастер циркового искусства Максимилиано Труцци[1]. Цирк представлял собой небольшое" +
-                " деревянное строение, с коническими натяжными куполами, которое могло вместить до 900 зрителей." +
-                " Строители предусмотрели внутри систему отопления, поэтому представления давались даже морозной зимой[2]." +
-                " Семья Труцци располагала большой программой: наездничество во всех видах, икарийские игры, пантомима." +
-                " В цирке проходили не только обычные представления, но ставились и драматические спектакли.";
-        p.point = new Point(56.825943, 60.604998);
-        objects.add(p);
+    public Bitmap selectImage(String type){
+        Bitmap bitmap;
+
+        switch (type){
+            case ("science"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.science).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("religion"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.religion).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("performance"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.performance).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("event"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.event).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            default:
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.search_result).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+        }
     }
 
     private void setMapStyle(){
