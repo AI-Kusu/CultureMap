@@ -1,5 +1,6 @@
 package com.st17.culturemap;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.st17.culturemap.databinding.ActivityMainBinding;
+import com.st17.culturemap.objects.ImageRVAdapter;
+
+import java.util.List;
 
 public class BottomSheetDialog extends BottomSheetDialogFragment {
 
     String name;
     String description;
-    String image = "https://firebasestorage.googleapis.com/v0/b/culturemap-d04ec.appspot.com/o/images%2FXXXL.jpg?alt=media&token=520528d3-159b-400e-a13a-75276555fddf";
+    List<String> imageURLs;
+
+    RecyclerView.LayoutManager RecyclerViewLayoutManager;
+    LinearLayoutManager HorizontalLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -32,9 +41,21 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         TextView place_description = (TextView) v.findViewById(R.id.place_description);
         place_description.setText(description);
 
-        ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
 
-        Picasso.get().load(image).into(imageView);
+        RecyclerView recyclerView = v.findViewById(R.id.BottomSheet_RV);
+
+        RecyclerViewLayoutManager = new LinearLayoutManager(v.getContext());
+
+        recyclerView.setLayoutManager(RecyclerViewLayoutManager);
+
+        ImageRVAdapter rvAdapter = new ImageRVAdapter(inflater, imageURLs);
+
+        HorizontalLayout = new LinearLayoutManager(v.getContext(),LinearLayoutManager.HORIZONTAL,false);
+
+        recyclerView.setLayoutManager(HorizontalLayout);
+
+        recyclerView.setAdapter(rvAdapter);
+
 
         return v;
     }

@@ -33,30 +33,21 @@ public class RVObjectsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rvobjects);
 
-        loadNote();
+
+
+        loadEvents();
     }
 
-    public void loadNote() {
+    public void loadEvents() {
         objectsRV = findViewById(R.id.idRVObjects);
 
-        db.collection("PlaceObject").get()
+        db.collection("Events").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
 
-                        int i = 1;
                         for (DocumentSnapshot d : list) {
-
-                            PlaceObject object1 = new PlaceObject();
-
-                            object1.name = "test" + i;
-                            object1.description = "des" + i;
-                            object1.point = new Point(0,0);
-
-                            objects.add(object1);
-
-                            i += 1;
 
                             PlaceObject object = new PlaceObject();
 
@@ -65,20 +56,34 @@ public class RVObjectsActivity extends AppCompatActivity{
 
                             object.name = info.get("name").toString();
                             object.description = info.get("description").toString();
+                            object.imageURLs = (ArrayList<String>) d.get("imageURLs");
                             object.point = new Point(Double.parseDouble(location.get("latitude").toString()), Double.parseDouble(location.get("longitude").toString()));
 
-
                             objects.add(object);
-
                         }
 
+
+
                         objectsRV.setLayoutManager(new LinearLayoutManager(RVObjectsActivity.this));
-                        adapter = new ObjectRVAdapter(RVObjectsActivity.this, objects);
+                        adapter = new ObjectRVAdapter(RVObjectsActivity.this, objects, objectClickListener);
                         objectsRV.setAdapter(adapter);
 
                     }
                 });
     }
+
+    ObjectRVAdapter.OnObjectClickListener objectClickListener = new ObjectRVAdapter.OnObjectClickListener() {
+        @Override
+        public void onObjectClick(PlaceObject object, int position) {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+
+            bottomSheetDialog.name = object.name;
+            bottomSheetDialog.description = object.description;
+            bottomSheetDialog.imageURLs = object.imageURLs;
+
+            bottomSheetDialog.show(getSupportFragmentManager(), "ModalBottomSheet");
+        }
+    };
 
     public void ReturnMainClick(View view) {
         Intent intent = new Intent(this, MainActivity.class);

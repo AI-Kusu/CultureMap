@@ -1,12 +1,11 @@
 package com.st17.culturemap;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -30,12 +29,14 @@ import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
+import com.yandex.mapkit.map.TextStyle;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.user_location.UserLocationLayer;
 import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,8 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
     private MapView mapView;
     private MapObjectCollection mapObjects;
     private UserLocationLayer userLocationLayer;
+
+    Context context;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -67,6 +70,8 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
         MapKit mapKit = MapKitFactory.getInstance();
 
+        context = MapActivity.this;
+
         //стиль карты
         setMapStyle();
 
@@ -78,7 +83,6 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         mapObjects = mapView.getMap().getMapObjects();
 
         loadObjects();
-
         loadEvents();
 
         //bottom navigation
@@ -89,7 +93,6 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
             @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 switch (item.getItemId()) {
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -97,7 +100,6 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                     case R.id.map:
                         return true;
                 }
-
                 return false;
             }
         });
@@ -119,9 +121,10 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                             object.name = info.get("name").toString();
                             object.description = info.get("description").toString();
                             object.type = info.get("type").toString();
+                            object.imageURLs = (ArrayList<String>) d.get("imageURLs");
                             object.point = new Point(Double.parseDouble(location.get("latitude").toString()), Double.parseDouble(location.get("longitude").toString()));
 
-                            ImageProvider imageProvider = ImageProvider.fromBitmap(drawSimpleBitmap(object.name, object.type));
+                            ImageProvider imageProvider = ImageProvider.fromBitmap(selectImage(object.type));
 
                             createTappablePoint(object, imageProvider);
 
@@ -145,10 +148,11 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
                             object.name = info.get("name").toString();
                             object.description = info.get("description").toString();
+                            object.imageURLs = (ArrayList<String>) d.get("imageURLs");
                             object.type = "event";
                             object.point = new Point(Double.parseDouble(location.get("latitude").toString()), Double.parseDouble(location.get("longitude").toString()));
 
-                            ImageProvider imageProvider = ImageProvider.fromBitmap(drawSimpleBitmap(object.name, object.type));
+                            ImageProvider imageProvider = ImageProvider.fromBitmap(selectImage(object.type));
 
                             createTappablePoint(object, imageProvider);
 
@@ -200,6 +204,7 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
                     bottomSheetDialog.name = mapObjectUserData.name;
                     bottomSheetDialog.description = mapObjectUserData.description;
+                    bottomSheetDialog.imageURLs = mapObjectUserData.imageURLs;
 
                     bottomSheetDialog.show(getSupportFragmentManager(), "ModalBottomSheet");
                 }
@@ -210,9 +215,26 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
     };
 
     private void createTappablePoint(PlaceObject placeObject, ImageProvider imageProvider) {
-        PlacemarkMapObject placemark = mapObjects.addPlacemark(placeObject.point,imageProvider,new IconStyle());
+        PlacemarkMapObject placemark = mapObjects.addPlacemark(placeObject.point);
 
-        placemark.setUserData(new MapObjectUserData(placeObject.name, placeObject.description));
+        //текст
+        TextStyle textStyle = new TextStyle();
+
+        textStyle.setColor(Color.BLACK);
+        textStyle.setSize(8);
+        textStyle.setOffsetFromIcon(true);
+        textStyle.setPlacement(TextStyle.Placement.BOTTOM);
+
+        placemark.setText(placeObject.name, textStyle);
+
+        //иконка
+        IconStyle iconStyle = new IconStyle();
+
+        iconStyle.setScale(0.5f);
+
+        placemark.setIcon(imageProvider, iconStyle);
+
+        placemark.setUserData(new MapObjectUserData(placeObject.name, placeObject.description, placeObject.imageURLs));
 
         placemark.addTapListener(pointMapObjectTapListener);
     }
@@ -220,47 +242,16 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
     private static class MapObjectUserData {
         final String name;
         final String description;
+        final List<String> imageURLs;
 
-        MapObjectUserData(String name, String description) {
+        MapObjectUserData(String name, String description, List<String> imageURLs) {
             this.name = name;
             this.description = description;
+            this.imageURLs = imageURLs;
         }
     }
 
-    //рисование значка
-    public Bitmap drawSimpleBitmap(String name, String type) {
-
-        Bitmap bitmap = selectImage(type);
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-
-        // отрисовка текста
-        paint.setColor(Color.BLACK);
-        paint.setAntiAlias(true);
-        paint.setTextSize(25 );
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setFakeBoldText(true);
-
-        int y = 100;
-        if (name.contains("\n"))
-        {
-            String[] texts = name.split("\n");
-
-            for (String txt : texts)
-            {
-                canvas.drawText(txt, 50, y, paint);
-
-                y += paint.getTextSize();
-            }
-        }
-        else
-        {
-            canvas.drawText(name, 0, 100 - ((paint.descent() + paint.ascent()) / 2), paint);
-        }
-
-        return bitmap;
-    }
-
+    //выбор значка
     public Bitmap selectImage(String type){
         Bitmap bitmap;
 
