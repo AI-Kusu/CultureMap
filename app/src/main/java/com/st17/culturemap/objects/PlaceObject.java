@@ -10,5 +10,6 @@ public class PlaceObject {
     public Point point;
     public String type;
     public String description;
+    public String descriptionShort;
     public ArrayList<String> imageURLs;
 }

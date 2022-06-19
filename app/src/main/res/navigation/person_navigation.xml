@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/person_navigation"
+    app:startDestination="@id/personContentFragment">
+
+    <fragment
+        android:id="@+id/personContentFragment"
+        android:name="com.st17.culturemap.PersonFragments.PersonContentFragment"
+        android:label="fragment_person_content"
+        tools:layout="@layout/fragment_person_content" >
+        <action
+            android:id="@+id/action_personContentFragment_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.st17.culturemap.PersonFragments.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_person_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_personContentFragment"
+            app:destination="@id/personContentFragment" />
+    </fragment>
+
+
+</navigation>

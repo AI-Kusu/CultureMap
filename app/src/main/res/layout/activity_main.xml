@@ -6,30 +6,216 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <ImageButton
+        android:id="@+id/imageButton_main_event"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp"
+        android:layout_marginBottom="306dp"
+        android:background="@drawable/event1"
+        android:onClick="OpenEventsClick"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="-3dp"
+        android:layout_marginBottom="0dp"
         app:itemBackground="@color/teal_700"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu"/>
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="226dp"
-        android:layout_height="318dp"
-        android:layout_above="@+id/bottom_navigator"
+    <TextView
+        android:id="@+id/textView_main_event"
+        android:layout_width="148dp"
+        android:layout_height="38dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp"
-        android:layout_marginBottom="306dp"
-        android:onClick="OpenEventsClick"
-        app:srcCompat="@drawable/ic_baseline_map_24"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:layout_marginTop="288dp"
+        android:gravity="center"
+        android:text="Мероприятия"
+        android:textSize="20sp" />
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="207dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="388dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <ImageButton
+                android:id="@+id/imageButton_main_art"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/art1"
+                android:onClick="OpenArtClick" />
+
+            <TextView
+                android:id="@+id/textView_main_art"
+                android:layout_width="150dp"
+                android:layout_height="38dp"
+                android:layout_below="@+id/imageButton_main_art"
+                android:layout_alignStart="@+id/imageButton_main_art"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Искусство"
+                android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_food"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_art"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_art"
+                android:background="@drawable/food1"
+                android:onClick="OpenFoodClick" />
+
+            <TextView
+                android:id="@+id/textView_main_food"
+                android:layout_width="150dp"
+                android:layout_height="38dp"
+                android:layout_below="@+id/imageButton_main_art"
+                android:layout_alignStart="@+id/imageButton_main_food"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Еда"
+                android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_game"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_food"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_food"
+                android:background="@drawable/game1"
+                android:onClick="OpenGameClick"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/textView_main_game"
+                android:layout_width="150dp"
+                android:layout_height="38dp"
+                android:layout_below="@+id/imageButton_main_art"
+                android:layout_alignStart="@+id/imageButton_main_game"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Игры"
+                android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_greenzone"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_music"
+                android:background="@drawable/greenzone1"
+                android:onClick="OpenGreenZoneClick" />
+
+            <TextView
+                android:id="@+id/textView_main_greenzone"
+                android:layout_width="150dp"
+                android:layout_height="38dp"
+                android:layout_below="@+id/imageButton_main_greenzone"
+                android:layout_alignStart="@+id/imageButton_main_greenzone"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Зелёная зона"
+                android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_love"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_greenzone"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_greenzone"
+                android:background="@drawable/love1"
+                android:onClick="OpenLoveClick" />
+
+            <TextView
+                android:id="@+id/textView_main_love"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/imageButton_main_greenzone"
+                android:layout_alignStart="@+id/imageButton_main_love"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Романтичные места"
+                android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_music"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_game"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_game"
+                android:background="@drawable/music1"
+                android:onClick="OpenMusicClick" />
+
+            <TextView
+                android:id="@+id/textView_main_music"
+                android:layout_width="150dp"
+                android:layout_height="38dp"
+                android:layout_below="@+id/imageButton_main_art"
+                android:layout_alignStart="@+id/imageButton_main_music"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Музыка"
+                android:textSize="17sp"/>
+
+            <ImageButton
+                android:id="@+id/imageButton_main_science"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_love"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_love"
+                android:background="@drawable/science1"
+                android:onClick="OpenScienceClick" />
+
+            <TextView
+                android:id="@+id/textView_main_science"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/imageButton_main_greenzone"
+                android:layout_alignStart="@+id/imageButton_main_science"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Наука и образование"
+                android:textSize="17sp" />
+        </RelativeLayout>
+    </HorizontalScrollView>
 
 </RelativeLayout>

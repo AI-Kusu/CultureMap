@@ -3,18 +3,47 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/art1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/event1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/flame1.xml" value="0.146" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/food1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/game.xml" value="0.1" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/game1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/greenzone1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/heart2.xml" value="0.211" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_heart2.xml" value="0.2145" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_nav_homemain.xml" value="0.1165" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_nav_mapmain.xml" value="0.1165" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/love1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/music1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/science1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.2005" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_login_24.xml" value="0.1515" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.2145" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_heart2.xml" value="0.2145" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_nav_main.xml" value="0.1" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_nav_map.xml" value="0.1" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/selector.xml" value="0.124" />
-        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_map.xml" value="0.4" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/selector_like.xml" value="0.2145" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout-v26/bottom_sheet_layout.xml" value="0.16757246376811594" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_map.xml" value="0.176" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_my_sqlhelper.xml" value="0.25416666666666665" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_person.xml" value="0.264" />
-        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_rvobjects.xml" value="0.16032608695652173" />
-        <entry key="..\:/CultureMap/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.2" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_rvobjects.xml" value="0.264" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.264" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/bottom_sheet_rv_image.xml" value="0.19157608695652173" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/bottom_sheet_rv_photo.xml" value="0.13903985507246377" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/bottomsheet_rvimage.xml" value="0.19157608695652173" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.24003623188405798" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/fragment_favourite.xml" value="0.1609375" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/fragment_firebase_authentication.xml" value="0.16757246376811594" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/fragment_person_content.xml" value="0.24010416666666667" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/fragment_person_favourite.xml" value="0.264" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/person_content.xml" value="0.25416666666666665" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/rv_main_object.xml" value="0.16757246376811594" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/rv_object.xml" value="0.2" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/rv_object_main.xml" value="0.16757246376811594" />
         <entry key="..\:/CultureMap/app/src/main/res/menu/bottom_menu.xml" value="0.264" />
       </map>
     </option>

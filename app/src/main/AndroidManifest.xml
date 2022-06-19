@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CultureMap">
         <activity
+            android:name=".PersonActivity"
+            android:exported="false" />
+        <activity
             android:name=".RVObjectsActivity"
             android:exported="false" />
         <activity

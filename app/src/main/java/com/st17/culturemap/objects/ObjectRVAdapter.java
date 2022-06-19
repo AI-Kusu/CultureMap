@@ -21,6 +21,7 @@ public class ObjectRVAdapter extends RecyclerView.Adapter<ObjectRVAdapter.ViewHo
     private final List<PlaceObject> objects;
     private final LayoutInflater inflater;
 
+
             // data is passed into the constructor
         public ObjectRVAdapter(Context context, List<PlaceObject> objects, OnObjectClickListener onClickListener) {
             this.inflater = LayoutInflater.from(context);
@@ -40,7 +41,7 @@ public class ObjectRVAdapter extends RecyclerView.Adapter<ObjectRVAdapter.ViewHo
     public void onBindViewHolder(ObjectRVAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PlaceObject object = objects.get(position);
         holder.nameView.setText(object.name);
-        holder.descriptionView.setText(object.description);
+        holder.descriptionView.setText(object.descriptionShort);
 
         Picasso.get().load(object.imageURLs.get(0)).into(holder.imageView);
 

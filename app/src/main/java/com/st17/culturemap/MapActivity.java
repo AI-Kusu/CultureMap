@@ -48,6 +48,8 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
     private MapObjectCollection mapObjects;
     private UserLocationLayer userLocationLayer;
 
+    public static List<String> types;
+
     Context context;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -64,9 +66,7 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         mapView = findViewById(R.id.mapview);
 
         mapView.getMap().move(
-                new CameraPosition(new Point(0, 0), 14.0f, 0.0f, 0.0f),
-                new Animation(Animation.Type.SMOOTH, 5),
-                null);
+                new CameraPosition(new Point(56.838011, 60.597446), 11.5f, 0.0f, 0.0f));
 
         MapKit mapKit = MapKitFactory.getInstance();
 
@@ -83,7 +83,10 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         mapObjects = mapView.getMap().getMapObjects();
 
         loadObjects();
-        loadEvents();
+
+        if(types == null || types.contains("event")) {
+            loadEvents();
+        }
 
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigator);
@@ -95,9 +98,14 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        overridePendingTransition(0, 0);
+                        Intent intentMain = new Intent(MapActivity.this, MainActivity.class);
+                        startActivity(intentMain);
+                        return true;
                     case R.id.map:
+                        return true;
+                    case R.id.person:
+                        Intent intentPerson = new Intent(MapActivity.this, PersonActivity.class);
+                        startActivity(intentPerson);
                         return true;
                 }
                 return false;
@@ -126,8 +134,9 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
                             ImageProvider imageProvider = ImageProvider.fromBitmap(selectImage(object.type));
 
-                            createTappablePoint(object, imageProvider);
-
+                            if(types == null || types.contains(object.type)){
+                                createTappablePoint(object, imageProvider);
+                            }
                         }
                     }
                 });
@@ -202,9 +211,7 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                 if (userData instanceof MapObjectUserData) {
                     MapObjectUserData mapObjectUserData = (MapObjectUserData)userData;
 
-                    bottomSheetDialog.name = mapObjectUserData.name;
-                    bottomSheetDialog.description = mapObjectUserData.description;
-                    bottomSheetDialog.imageURLs = mapObjectUserData.imageURLs;
+                    bottomSheetDialog.object = mapObjectUserData.object;
 
                     bottomSheetDialog.show(getSupportFragmentManager(), "ModalBottomSheet");
                 }
@@ -230,24 +237,20 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         //иконка
         IconStyle iconStyle = new IconStyle();
 
-        iconStyle.setScale(0.5f);
+        iconStyle.setScale(0.045f);
 
         placemark.setIcon(imageProvider, iconStyle);
 
-        placemark.setUserData(new MapObjectUserData(placeObject.name, placeObject.description, placeObject.imageURLs));
+        placemark.setUserData(new MapObjectUserData(placeObject));
 
         placemark.addTapListener(pointMapObjectTapListener);
     }
 
     private static class MapObjectUserData {
-        final String name;
-        final String description;
-        final List<String> imageURLs;
+        final PlaceObject object;
 
-        MapObjectUserData(String name, String description, List<String> imageURLs) {
-            this.name = name;
-            this.description = description;
-            this.imageURLs = imageURLs;
+        MapObjectUserData(PlaceObject object) {
+            this.object = object;
         }
     }
 
@@ -262,11 +265,26 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
             case ("religion"):
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.religion).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
-            case ("performance"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.performance).copy(Bitmap.Config.ARGB_8888, true);
+            case ("art"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.art).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("music"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("event"):
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.event).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("food"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.food).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("greenzone"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.greenzone).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("game"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.game).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("love"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.love).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             default:
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.search_result).copy(Bitmap.Config.ARGB_8888, true);

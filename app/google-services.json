@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "138698686968",
+    "firebase_url": "https://culturemap-d04ec-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "culturemap-d04ec",
     "storage_bucket": "culturemap-d04ec.appspot.com"
   },
@@ -21,6 +22,64 @@
             "certificate_hash": "0dd301bd92fd4cf11c63111b3ecba9ca9ae1b602"
           }
         },
+        {
+          "client_id": "138698686968-5m226vuo71phu5amgoi95sqfuegl29nf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6QrtdeqaD0yuvHlXbJ8a5P2Bi3v55eEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138698686968-5m226vuo71phu5amgoi95sqfuegl29nf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138698686968:android:98edea54ff8e330d5e560d",
+        "android_client_info": {
+          "package_name": "com.st17.newobjects"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138698686968-5m226vuo71phu5amgoi95sqfuegl29nf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6QrtdeqaD0yuvHlXbJ8a5P2Bi3v55eEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138698686968-5m226vuo71phu5amgoi95sqfuegl29nf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138698686968:android:e49dc162101c510e5e560d",
+        "android_client_info": {
+          "package_name": "com.st17.testfirebase"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "138698686968-5m226vuo71phu5amgoi95sqfuegl29nf.apps.googleusercontent.com",
           "client_type": 3
