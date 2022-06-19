@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.st17.culturemap.R;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class ImageRVAdapter extends RecyclerView.Adapter<ImageRVAdapter.ViewHold
     public void onBindViewHolder(@NonNull ImageRVAdapter.ViewHolder holder, int position) {
         String URL = URLs.get(position);
 
-        Picasso.get().load(URL).into(holder.imageView);
+        Glide.with(inflater.getContext()).load(URL).into(holder.imageView);
     }
 
     @Override

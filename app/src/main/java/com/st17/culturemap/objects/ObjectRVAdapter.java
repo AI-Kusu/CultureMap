@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.st17.culturemap.R;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class ObjectRVAdapter extends RecyclerView.Adapter<ObjectRVAdapter.ViewHo
         holder.nameView.setText(object.name);
         holder.descriptionView.setText(object.descriptionShort);
 
-        Picasso.get().load(object.imageURLs.get(0)).into(holder.imageView);
+        Glide.with(inflater.getContext()).load(object.imageURLs.get(0)).into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

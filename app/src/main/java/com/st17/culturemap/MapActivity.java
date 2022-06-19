@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,7 +53,7 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
     Context context;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,9 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         setContentView(R.layout.activity_map);
 
         super.onCreate(savedInstanceState);
+
+        FirebaseApp.initializeApp(this);
+        db = FirebaseFirestore.getInstance();
 
         mapView = findViewById(R.id.mapview);
 
