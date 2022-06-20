@@ -1,28 +1,40 @@
 package com.st17.culturemap;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.st17.culturemap.objects.ObjectRVAdapter;
 import com.st17.culturemap.objects.PlaceObject;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.runtime.image.ImageProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class RVObjectsActivity extends AppCompatActivity{
+
+    public static String lastPage;
 
     ObjectRVAdapter adapter;
     private RecyclerView objectsRV;
@@ -31,6 +43,9 @@ public class RVObjectsActivity extends AppCompatActivity{
     public static String type;
     public static String collection;
     public static String title;
+    public static String userList;
+
+    public List<String> favourites;
 
     private FirebaseFirestore db;
 
@@ -45,13 +60,21 @@ public class RVObjectsActivity extends AppCompatActivity{
         TextView textView = findViewById(R.id.textView_rvobject_title);
         textView.setText(title);
 
-        loadObjects(collection, type);
+        if(type != null){
+            loadObjectsByType(type);
+        }else{
+            loadFavouriteObjects();
+        }
+
+        objectsRV.setLayoutManager(new LinearLayoutManager(RVObjectsActivity.this));
+        adapter = new ObjectRVAdapter(RVObjectsActivity.this, objects, objectClickListener);
+        objectsRV.setAdapter(adapter);
     }
 
-    private void loadObjects(String collection, String type) {
+    private void loadObjectsByType(String type) {
         objectsRV = findViewById(R.id.idRVObjects);
 
-        db.collection(collection).whereEqualTo("type", type).get()
+        db.collection("PlaceObject").whereEqualTo("type", type).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -81,6 +104,57 @@ public class RVObjectsActivity extends AppCompatActivity{
                 });
     }
 
+    private void loadFavouriteObjects() {
+        objectsRV = findViewById(R.id.idRVObjects);
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference dbUser = db.collection("users").document(currentUser.getUid());
+
+        dbUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    favourites = (List<String>) document.get(userList);
+
+                    for (String name : favourites) {
+                        addObject(name);
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    private void addObject(String value) {
+        db.collection("PlaceObject").whereEqualTo("name", value).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+
+                        for (DocumentSnapshot d : list) {
+                            PlaceObject object = new PlaceObject();
+                            Map<String, Object> info = d.getData();
+
+                            object.name = info.get("name").toString();
+                            object.description = info.get("description").toString();
+                            object.descriptionShort = info.get("description_short").toString();
+                            object.imageURLs = (ArrayList<String>) d.get("imageURLs");
+
+                            objects.add(object);
+                        }
+                        objectsRV.setLayoutManager(new LinearLayoutManager(RVObjectsActivity.this));
+                        adapter = new ObjectRVAdapter(RVObjectsActivity.this, objects, objectClickListener);
+                        objectsRV.setAdapter(adapter);
+                    }
+                });
+    }
+
 
     ObjectRVAdapter.OnObjectClickListener objectClickListener = new ObjectRVAdapter.OnObjectClickListener() {
         @Override
@@ -93,9 +167,14 @@ public class RVObjectsActivity extends AppCompatActivity{
         }
     };
 
-    public boolean ReturnMainClick(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    public boolean ReturnLastClick(View view) {
+        if(lastPage == "main"){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(this, PersonActivity.class);
+            startActivity(intent);
+        }
         return true;
     }
 

@@ -81,4 +81,74 @@
         android:gravity="center"
         android:text="TextView" />
 
+    <ImageButton
+        android:id="@+id/imageButton_favourite"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/textView_name"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="77dp"
+        android:background="@drawable/favourite"
+        android:onClick="OpenFavouritesClick" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageButton_favourite"
+        android:layout_alignStart="@+id/imageButton_favourite"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="15dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="Любимые места" />
+
+    <ImageButton
+        android:id="@+id/imageButton_wantVisit"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/imageButton_favourite"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_baseline_bookmark_24"
+        android:onClick="OpenWantVisitClick" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageButton_wantVisit"
+        android:layout_alignEnd="@+id/imageButton_wantVisit"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="0dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="Хочу посетить" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ic_baseline_done_on" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageButton5"
+        android:layout_alignEnd="@+id/imageButton5"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="0dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="Посещёные места"
+        android:onClick="OpenVisitedClick"/>
+
 </RelativeLayout>

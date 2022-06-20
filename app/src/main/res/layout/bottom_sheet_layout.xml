@@ -78,8 +78,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -90,8 +88,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/fab_more"
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_heart2"/>
+        android:backgroundTint="@color/purple_200"
+        android:clickable="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_addToPath"
@@ -102,7 +100,7 @@
         android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/fab_like"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        android:backgroundTint="@color/purple_200"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_more"
@@ -114,4 +112,15 @@
         android:layout_marginEnd="10dp"
         android:clickable="true"
         app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_visited"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/fab_addToPath"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/fab_addToPath"
+        android:clickable="true"
+        android:backgroundTint="@color/purple_200"/>
 </RelativeLayout>

@@ -43,8 +43,8 @@
 
 
     <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="207dp"
+        android:layout_width="398dp"
+        android:layout_height="205dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
@@ -191,7 +191,7 @@
                 android:layout_marginTop="6dp"
                 android:gravity="center"
                 android:text="Музыка"
-                android:textSize="17sp"/>
+                android:textSize="17sp" />
 
             <ImageButton
                 android:id="@+id/imageButton_main_science"
@@ -215,7 +215,56 @@
                 android:gravity="center"
                 android:text="Наука и образование"
                 android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_ruin"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_science"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_science"
+                android:background="@drawable/ghost1"
+                android:onClick="OpenRuinClick" />
+
+            <TextView
+                android:id="@+id/textView_main_ruin"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/imageButton_main_greenzone"
+                android:layout_alignStart="@+id/imageButton_main_ruin"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Разрушенные и несуществующие постройки"
+                android:textSize="17sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_main_arch"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_alignTop="@+id/imageButton_main_ruin"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_toEndOf="@+id/imageButton_main_ruin"
+                android:background="@drawable/arch1"
+                android:onClick="OpenArchClick" />
+
+            <TextView
+                android:id="@+id/textView_main_arch"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/imageButton_main_greenzone"
+                android:layout_alignStart="@+id/imageButton_main_arch"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="Архитектура"
+                android:textSize="17sp" />
         </RelativeLayout>
+
+
+
     </HorizontalScrollView>
 
 </RelativeLayout>

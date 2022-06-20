@@ -88,10 +88,6 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
         loadObjects();
 
-        if(types == null || types.contains("event")) {
-            loadEvents();
-        }
-
         //bottom navigation
         bottomNavigationView = findViewById(R.id.bottom_navigator);
         bottomNavigationView.setSelectedItemId(R.id.map);
@@ -141,34 +137,6 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                             if(types == null || types.contains(object.type)){
                                 createTappablePoint(object, imageProvider);
                             }
-                        }
-                    }
-                });
-    }
-
-    public void loadEvents() {
-        db.collection("Events").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-
-                        for (DocumentSnapshot d : list) {
-                            PlaceObject object = new PlaceObject();
-                            Map<String, Object> info = d.getData();
-
-                            Map<String, Object> location = (Map<String, Object>) d.get("point");
-
-                            object.name = info.get("name").toString();
-                            object.description = info.get("description").toString();
-                            object.imageURLs = (ArrayList<String>) d.get("imageURLs");
-                            object.type = "event";
-                            object.point = new Point(Double.parseDouble(location.get("latitude").toString()), Double.parseDouble(location.get("longitude").toString()));
-
-                            ImageProvider imageProvider = ImageProvider.fromBitmap(selectImage(object.type));
-
-                            createTappablePoint(object, imageProvider);
-
                         }
                     }
                 });
@@ -289,6 +257,12 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                 return bitmap;
             case ("love"):
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.love).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("ruin"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ghost).copy(Bitmap.Config.ARGB_8888, true);
+                return bitmap;
+            case ("arch"):
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.arch).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             default:
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.search_result).copy(Bitmap.Config.ARGB_8888, true);

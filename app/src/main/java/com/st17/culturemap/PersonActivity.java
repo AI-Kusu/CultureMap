@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,13 +21,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PersonActivity extends AppCompatActivity {
 
@@ -62,11 +72,16 @@ public class PersonActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_person);
 
+        FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
-
-
         createRequest();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(currentUser!=null){
+            checkAndCreateAcc(currentUser);
+        }
 
         findViewById(R.id.auth).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +122,6 @@ public class PersonActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void createRequest() {
         // Configure Google Sign In
@@ -177,5 +191,84 @@ public class PersonActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void checkAndCreateAcc(FirebaseUser currentUser) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference dbUser = db.collection("users").document(currentUser.getUid());
+        dbUser.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            private static final String TAG = "tag";
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "Document exists!");
+                    } else {
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("name", currentUser.getDisplayName());
+                        user.put("favourites", new ArrayList<String>());
+                        user.put("wantVisit", new ArrayList<String>());
+                        user.put("visited", new ArrayList<String>());
+
+
+                        db.collection("users").document(currentUser.getUid())
+                                .set(user)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                });
+                        Log.d(TAG, "Document does not exist!");
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void OpenFavouritesClick(View view) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Toast.makeText(this, "Войдите в аккаунт", Toast.LENGTH_SHORT).show();
+        }else{
+            RVObjectsActivity.type = null;
+            RVObjectsActivity.collection = null;
+            RVObjectsActivity.title = "Любимые";
+            RVObjectsActivity.lastPage = "person";
+            RVObjectsActivity.userList = "favourites";
+            Intent intent = new Intent(this, RVObjectsActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void OpenWantVisitClick(View view) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Toast.makeText(this, "Войдите в аккаунт", Toast.LENGTH_SHORT).show();
+        }else{
+            RVObjectsActivity.type = null;
+            RVObjectsActivity.collection = null;
+            RVObjectsActivity.title = "Хочу посетить";
+            RVObjectsActivity.lastPage = "person";
+            RVObjectsActivity.userList = "wantVisit";
+            Intent intent = new Intent(this, RVObjectsActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void OpenVisitedClick(View view) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Toast.makeText(this, "Войдите в аккаунт", Toast.LENGTH_SHORT).show();
+        }else{
+            RVObjectsActivity.type = null;
+            RVObjectsActivity.collection = null;
+            RVObjectsActivity.title = "Посещёные";
+            RVObjectsActivity.lastPage = "person";
+            RVObjectsActivity.userList = "visited";
+            Intent intent = new Intent(this, RVObjectsActivity.class);
+            startActivity(intent);
+        }
     }
 }

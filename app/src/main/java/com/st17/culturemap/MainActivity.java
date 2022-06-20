@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "event";
         RVObjectsActivity.collection = "Events";
         RVObjectsActivity.title = "Мероприятия";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "art";
         RVObjectsActivity.collection = "PlaceObject";
         RVObjectsActivity.title = "Искусство";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "food";
         RVObjectsActivity.collection = "PlaceObject";
         RVObjectsActivity.title = "Еда";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "game";
         RVObjectsActivity.collection = "PlaceObject";
         RVObjectsActivity.title = "Игры";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "music";
         RVObjectsActivity.collection = "PlaceObject";
         RVObjectsActivity.title = "Музыка";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -89,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
     public void OpenGreenZoneClick(View view) {
         RVObjectsActivity.type = "greenzone";
         RVObjectsActivity.collection = "PlaceObject";
-        RVObjectsActivity.title = "Зелёная зонв";
+        RVObjectsActivity.title = "Зелёная зона";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "love";
         RVObjectsActivity.collection = "PlaceObject";
         RVObjectsActivity.title = "Романтические места";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
@@ -106,6 +113,25 @@ public class MainActivity extends AppCompatActivity {
         RVObjectsActivity.type = "science";
         RVObjectsActivity.collection = "PlaceObject";
         RVObjectsActivity.title = "Наука и образование";
+        RVObjectsActivity.lastPage = "main";
+        Intent intent = new Intent(this, RVObjectsActivity.class);
+        startActivity(intent);
+    }
+
+    public void OpenRuinClick(View view) {
+        RVObjectsActivity.type = "ruin";
+        RVObjectsActivity.collection = "PlaceObject";
+        RVObjectsActivity.title = "Разрушенные и несуществующие постройки";
+        RVObjectsActivity.lastPage = "main";
+        Intent intent = new Intent(this, RVObjectsActivity.class);
+        startActivity(intent);
+    }
+
+    public void OpenArchClick(View view) {
+        RVObjectsActivity.type = "arch";
+        RVObjectsActivity.collection = "PlaceObject";
+        RVObjectsActivity.title = "Архитектура";
+        RVObjectsActivity.lastPage = "main";
         Intent intent = new Intent(this, RVObjectsActivity.class);
         startActivity(intent);
     }
