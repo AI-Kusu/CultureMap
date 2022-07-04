@@ -15,17 +15,22 @@
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/greenzone1.xml" value="0.1375" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/heart2.xml" value="0.211" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_heart2.xml" value="0.2145" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_heart_off.xml" value="0.2305" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_heart_on.xml" value="0.152" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2305" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_nav_homemain.xml" value="0.1165" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/ic_nav_mapmain.xml" value="0.1165" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/love1.xml" value="0.1375" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/music1.xml" value="0.1375" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable-v24/science1.xml" value="0.1375" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.2305" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.2005" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.152" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_done_24.xml" value="0.152" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_done_on.xml" value="0.152" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_heart_broken_24.xml" value="0.2305" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_login_24.xml" value="0.1515" />
+        <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.2305" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.2145" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_heart2.xml" value="0.2145" />
         <entry key="..\:/CultureMap/app/src/main/res/drawable/ic_nav_main.xml" value="0.1" />
@@ -36,6 +41,7 @@
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_main.xml" value="0.17580340264650285" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_map.xml" value="0.176" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_my_sqlhelper.xml" value="0.25416666666666665" />
+        <entry key="..\:/CultureMap/app/src/main/res/layout/activity_news_feed.xml" value="0.264" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_person.xml" value="0.264" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/activity_rvobjects.xml" value="0.264" />
         <entry key="..\:/CultureMap/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.264" />

@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
         android:layout_marginBottom="306dp"
-        android:background="@drawable/event1"
+        android:background="@drawable/ic_object_event1"
         android:onClick="OpenEventsClick"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -25,10 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"
-        app:itemBackground="@color/teal_700"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        app:menu="@menu/bottom_menu"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:menu="@menu/bottom_menu"
+        app:labelVisibilityMode="labeled"/>
 
     <TextView
         android:id="@+id/textView_main_event"
@@ -62,7 +62,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="0dp"
-                android:background="@drawable/art1"
+                android:background="@drawable/ic_object_art1"
                 android:onClick="OpenArtClick" />
 
             <TextView
@@ -85,7 +85,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_art"
-                android:background="@drawable/food1"
+                android:background="@drawable/ic_object_food1"
                 android:onClick="OpenFoodClick" />
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_food"
-                android:background="@drawable/game1"
+                android:background="@drawable/ic_object_game1"
                 android:onClick="OpenGameClick"
                 tools:ignore="SpeakableTextPresentCheck" />
 
@@ -132,7 +132,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_music"
-                android:background="@drawable/greenzone1"
+                android:background="@drawable/ic_object_greenzone1"
                 android:onClick="OpenGreenZoneClick" />
 
             <TextView
@@ -155,7 +155,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_greenzone"
-                android:background="@drawable/love1"
+                android:background="@drawable/ic_object_love1"
                 android:onClick="OpenLoveClick" />
 
             <TextView
@@ -178,7 +178,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_game"
-                android:background="@drawable/music1"
+                android:background="@drawable/ic_object_music1"
                 android:onClick="OpenMusicClick" />
 
             <TextView
@@ -201,7 +201,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_love"
-                android:background="@drawable/science1"
+                android:background="@drawable/ic_object_science1"
                 android:onClick="OpenScienceClick" />
 
             <TextView
@@ -224,7 +224,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_science"
-                android:background="@drawable/ghost1"
+                android:background="@drawable/ic_object_ghost1"
                 android:onClick="OpenRuinClick" />
 
             <TextView
@@ -247,7 +247,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/imageButton_main_ruin"
-                android:background="@drawable/arch1"
+                android:background="@drawable/ic_object_arch1"
                 android:onClick="OpenArchClick" />
 
             <TextView

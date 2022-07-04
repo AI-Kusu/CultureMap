@@ -1,8 +1,10 @@
 package com.st17.culturemap;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,6 +13,8 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,7 +23,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.st17.culturemap.objects.PlaceObject;
-import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -43,6 +46,7 @@ import java.util.Map;
 
 public class MapActivity extends AppCompatActivity implements UserLocationObjectListener{
 
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100;
     BottomNavigationView bottomNavigationView;
 
     private MapView mapView;
@@ -79,6 +83,11 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
         //стиль карты
         setMapStyle();
 
+        //location
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
         userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
         userLocationLayer.setVisible(true);
         userLocationLayer.setHeadingEnabled(false);
@@ -103,6 +112,10 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
                         return true;
                     case R.id.map:
                         return true;
+                    case R.id.newsfeed:
+                        Intent intentNewsFeed = new Intent(MapActivity.this, NewsFeedActivity.class);
+                        startActivity(intentNewsFeed);
+                        return true;
                     case R.id.person:
                         Intent intentPerson = new Intent(MapActivity.this, PersonActivity.class);
                         startActivity(intentPerson);
@@ -126,6 +139,7 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
                             Map<String, Object> location = (Map<String, Object>) d.get("point");
 
+                            object.id = d.getId();
                             object.name = info.get("name").toString();
                             object.description = info.get("description").toString();
                             object.type = info.get("type").toString();
@@ -232,37 +246,37 @@ public class MapActivity extends AppCompatActivity implements UserLocationObject
 
         switch (type){
             case ("science"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.science).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_science).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("religion"):
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.religion).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("art"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.art).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_art).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("music"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_music).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("event"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.event).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_event).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("food"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.food).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_food).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("greenzone"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.greenzone).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_greenzone).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("game"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.game).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_game).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("love"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.love).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_love).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("ruin"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ghost).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_ghost).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             case ("arch"):
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.arch).copy(Bitmap.Config.ARGB_8888, true);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_object_arch).copy(Bitmap.Config.ARGB_8888, true);
                 return bitmap;
             default:
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.search_result).copy(Bitmap.Config.ARGB_8888, true);

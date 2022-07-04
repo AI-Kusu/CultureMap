@@ -23,7 +23,7 @@
             android:id="@+id/imageView"
             android:layout_width="113dp"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/favourite" />
+            app:srcCompat="@drawable/ic_object_favourite" />
 
         <TextView
             android:id="@+id/textView_favourite"

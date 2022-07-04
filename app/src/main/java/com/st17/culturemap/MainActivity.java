@@ -36,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
                         Intent intentMap = new Intent(MainActivity.this, MapActivity.class);
                         startActivity(intentMap);
                         return true;
+                    case R.id.newsfeed:
+                        Intent intentNewsFeed = new Intent(MainActivity.this, NewsFeedActivity.class);
+                        startActivity(intentNewsFeed);
+                        return true;
                     case R.id.person:
                         Intent intentPerson = new Intent(MainActivity.this, PersonActivity.class);
                         startActivity(intentPerson);

@@ -87,6 +87,7 @@ public class RVObjectsActivity extends AppCompatActivity{
                             Map<String, Object> info = d.getData();
                             Map<String, Object> location = (Map<String, Object>) d.get("point");
 
+                            object.id = d.getId();
                             object.name = info.get("name").toString();
                             object.description = info.get("description").toString();
                             object.descriptionShort = info.get("description_short").toString();
@@ -109,7 +110,6 @@ public class RVObjectsActivity extends AppCompatActivity{
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference dbUser = db.collection("users").document(currentUser.getUid());
 
@@ -126,35 +126,34 @@ public class RVObjectsActivity extends AppCompatActivity{
                 }
             }
         });
-
-
     }
 
     private void addObject(String value) {
-        db.collection("PlaceObject").whereEqualTo("name", value).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("PlaceObject").document(value)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot d = task.getResult();
 
-                        for (DocumentSnapshot d : list) {
                             PlaceObject object = new PlaceObject();
                             Map<String, Object> info = d.getData();
 
+                            object.id = d.getId();
                             object.name = info.get("name").toString();
                             object.description = info.get("description").toString();
                             object.descriptionShort = info.get("description_short").toString();
                             object.imageURLs = (ArrayList<String>) d.get("imageURLs");
 
                             objects.add(object);
+
+                            objectsRV.setLayoutManager(new LinearLayoutManager(RVObjectsActivity.this));
+                            adapter = new ObjectRVAdapter(RVObjectsActivity.this, objects, objectClickListener);
+                            objectsRV.setAdapter(adapter);
                         }
-                        objectsRV.setLayoutManager(new LinearLayoutManager(RVObjectsActivity.this));
-                        adapter = new ObjectRVAdapter(RVObjectsActivity.this, objects, objectClickListener);
-                        objectsRV.setAdapter(adapter);
                     }
                 });
     }
-
 
     ObjectRVAdapter.OnObjectClickListener objectClickListener = new ObjectRVAdapter.OnObjectClickListener() {
         @Override
@@ -168,13 +167,13 @@ public class RVObjectsActivity extends AppCompatActivity{
     };
 
     public boolean ReturnLastClick(View view) {
+        Intent intent;
         if(lastPage == "main"){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            intent = new Intent(this, MainActivity.class);
         }else{
-            Intent intent = new Intent(this, PersonActivity.class);
-            startActivity(intent);
+            intent = new Intent(this, PersonActivity.class);
         }
+        startActivity(intent);
         return true;
     }
 

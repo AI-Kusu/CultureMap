@@ -6,6 +6,7 @@ import com.yandex.mapkit.geometry.Point;
 import java.util.ArrayList;
 
 public class PlaceObject {
+    public String id;
     public String name;
     public Point point;
     public String type;

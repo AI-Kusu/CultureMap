@@ -11,12 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/teal_700"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_menu" />
+
+
 
     <RelativeLayout
         android:id="@+id/accountInfo"
@@ -89,7 +88,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="77dp"
-        android:background="@drawable/favourite"
+        android:background="@drawable/ic_object_favourite"
         android:onClick="OpenFavouritesClick" />
 
     <TextView

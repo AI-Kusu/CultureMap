@@ -156,14 +156,14 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
                                         List<String> favourites = (List<String>) document.get("favourites");
 
-                                        if(favourites.contains(object.name)){
-                                            favourites.remove(object.name);
+                                        if(favourites.contains(object.id)){
+                                            favourites.remove(object.id);
                                             Toast.makeText(v.getContext(), "Удалено из любимого", Toast.LENGTH_SHORT).show();
                                             likeFab.setImageResource(R.drawable.ic_baseline_heart_broken_24);
                                         }
                                         else{
                                             likeFab.setImageResource(R.drawable.ic_heart_on);
-                                            favourites.add(object.name);
+                                            favourites.add(object.id);
                                             Toast.makeText(v.getContext(), "Добавлено в любимое", Toast.LENGTH_SHORT).show();
                                         }
                                         String TAG = "updateList";
@@ -183,7 +183,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                                     }
                                 }
                             });
-
                         }else {
                             Toast.makeText(v.getContext(), "Войдите в аккаунт", Toast.LENGTH_SHORT).show();
                         }
@@ -210,13 +209,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
                                         List<String> wantVisit = (List<String>) document.get("wantVisit");
 
-                                        if(wantVisit.contains(object.name)){
-                                            wantVisit.remove(object.name);
+                                        if(wantVisit.contains(object.id)){
+                                            wantVisit.remove(object.id);
                                             Toast.makeText(v.getContext(), "Удалено из интересного", Toast.LENGTH_SHORT).show();
                                             addToWantFab.setImageResource(R.drawable.ic_baseline_bookmark_border_24);
                                         }
                                         else{
-                                            wantVisit.add(object.name);
+                                            wantVisit.add(object.id);
                                             Toast.makeText(v.getContext(), "Добавлено в интересное", Toast.LENGTH_SHORT).show();
                                             addToWantFab.setImageResource(R.drawable.ic_baseline_bookmark_24);
                                         }
@@ -263,13 +262,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
                                         List<String> visited = (List<String>) document.get("visited");
 
-                                        if(visited.contains(object.name)){
-                                            visited.remove(object.name);
+                                        if(visited.contains(object.id)){
+                                            visited.remove(object.id);
                                             Toast.makeText(v.getContext(), "Удалено из посещённого", Toast.LENGTH_SHORT).show();
                                             addToVisitFab.setImageResource(R.drawable.ic_baseline_done_24);
                                         }
                                         else{
-                                            visited.add(object.name);
+                                            visited.add(object.id);
                                             Toast.makeText(v.getContext(), "Добавлено в посещённое", Toast.LENGTH_SHORT).show();
                                             addToVisitFab.setImageResource(R.drawable.ic_baseline_done_on);
                                         }
